@@ -231,54 +231,14 @@ h3 {
   transform: rotate(2deg);
 }
 
-.phone-screen {
-  min-height: 560px;
-  padding: 28px 22px;
+.phone-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
   border-radius: 32px;
-  text-align: center;
-  background:
-    radial-gradient(circle at top, rgba(255,255,255,0.92), transparent 16rem),
-    linear-gradient(160deg, #fff8ef, #fff3c7 48%, #ffe4ec);
+  object-fit: cover;
 }
 
-.pill {
-  display: inline-flex;
-  padding: 8px 16px;
-  border-radius: 999px;
-  color: var(--berry);
-  background: rgba(255,255,255,0.76);
-  font-weight: 900;
-}
-
-.phone-screen h2 {
-  margin: 20px 0 8px;
-  font-family: "Great Vibes", cursive;
-  font-size: 4.3rem;
-  line-height: 0.9;
-  color: var(--berry);
-  font-weight: 400;
-}
-
-.phone-screen p { color: var(--muted); font-weight: 800; }
-
-.mini-photo-card {
-  height: 210px;
-  margin: 22px auto;
-  border-radius: 28px;
-  background:
-    linear-gradient(145deg, rgba(255,255,255,0.72), rgba(255,233,168,0.42), rgba(255,222,232,0.42)),
-    url("https://babyraquel.sweetmomentssv.com/assets/raquel-share-preview.jpg") center/cover;
-  border: 7px solid rgba(255,255,255,0.8);
-  box-shadow: 0 18px 42px rgba(160,53,82,0.18);
-}
-
-.mini-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.mini-grid span,
 .feature-grid article,
 .package-card,
 .steps div,
@@ -290,14 +250,6 @@ h3 {
   box-shadow: 0 18px 48px rgba(160,53,82,0.12);
   backdrop-filter: blur(16px) saturate(1.14);
   -webkit-backdrop-filter: blur(16px) saturate(1.14);
-}
-
-.mini-grid span {
-  padding: 12px 8px;
-  border-radius: 16px;
-  font-weight: 900;
-  color: var(--berry);
-  font-size: 0.82rem;
 }
 
 .demo-card {
@@ -473,8 +425,6 @@ footer p { margin: 5px 0; }
     width: min(100%, 300px);
     transform: none;
   }
-
-  .phone-screen { min-height: 500px; }
 
   .demo-card {
     align-items: stretch;
