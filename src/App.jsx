@@ -2,7 +2,29 @@ import { useEffect, useState } from 'react';
 
 const WHATSAPP_NUMBER = '50379532864';
 const DEMO_URL = 'https://babyraquel.sweetmomentssv.com';
+const DENZEL_DEMO_URL = 'https://primercumpledenzel.com/';
 const INSTAGRAM_URL = 'https://www.instagram.com/sweet.momentssv/';
+
+const heroDemos = [
+  {
+    id: 'raquel',
+    tab: 'Baby shower',
+    label: 'Baby Raquel',
+    url: DEMO_URL,
+    poster: './assets/raquel-scroll-poster-v1.jpg',
+    webm: './assets/raquel-scroll-v1.webm',
+    mp4: './assets/raquel-scroll-v1.mp4',
+  },
+  {
+    id: 'denzel',
+    tab: 'Cumpleaños',
+    label: 'Cumpleaños de Denzel',
+    url: DENZEL_DEMO_URL,
+    poster: './assets/denzel-scroll-poster-v1.jpg',
+    webm: './assets/denzel-scroll-v1.webm',
+    mp4: './assets/denzel-scroll-v1.mp4',
+  },
+];
 
 const whatsappUrl = (message = 'SM-WEB Hola, quiero crear una invitación digital para mi evento.') =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -83,23 +105,41 @@ function Header() {
 }
 
 function HeroInvitation() {
+  const [activeDemo, setActiveDemo] = useState(heroDemos[0]);
+
   return (
     <div className="hero-art" aria-label="Ejemplo editorial de una invitación digital">
-      <div className="hero-frame-label"><span>Sweet Moments</span><small>Una experiencia hecha para compartir</small></div>
-      <a className="phone" href={DEMO_URL} target="_blank" rel="noreferrer" aria-label="Abrir la invitación real de Baby Raquel">
+      <div className="hero-demo-head">
+        <div className="hero-frame-label"><span>Sweet Moments</span><small>Invitaciones reales · toca para explorar</small></div>
+        <div className="hero-demo-picker" role="group" aria-label="Cambiar demostración">
+          {heroDemos.map((demo) => (
+            <button
+              type="button"
+              key={demo.id}
+              className={activeDemo.id === demo.id ? 'active' : ''}
+              onClick={() => setActiveDemo(demo)}
+              aria-pressed={activeDemo.id === demo.id}
+            >
+              {demo.tab}
+            </button>
+          ))}
+        </div>
+      </div>
+      <a className="phone" href={activeDemo.url} target="_blank" rel="noreferrer" aria-label={`Abrir la invitación real: ${activeDemo.label}`}>
         <div className="phone-screen phone-video-screen">
           <video
+            key={activeDemo.id}
             className="invite-video"
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
-            poster="./assets/raquel-scroll-poster-v1.jpg"
+            poster={activeDemo.poster}
             aria-hidden="true"
           >
-            <source src="./assets/raquel-scroll-v1.webm" type="video/webm" />
-            <source src="./assets/raquel-scroll-v1.mp4" type="video/mp4" />
+            <source src={activeDemo.webm} type="video/webm" />
+            <source src={activeDemo.mp4} type="video/mp4" />
           </video>
         </div>
       </a>
