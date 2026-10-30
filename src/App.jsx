@@ -86,18 +86,23 @@ function HeroInvitation() {
   return (
     <div className="hero-art" aria-label="Ejemplo editorial de una invitación digital">
       <div className="hero-frame-label"><span>Sweet Moments</span><small>Una experiencia hecha para compartir</small></div>
-      <div className="phone">
-        <div className="phone-island" />
-        <div className="phone-screen">
-          <span className="invite-kicker">BABY SHOWER</span>
-          <div className="invite-flower"><i /><i /><i /><b>R</b></div>
-          <p>Celebrando la llegada de</p>
-          <h3>Raquel</h3>
-          <em>La dulce espera está por terminar</em>
-          <div className="invite-date"><strong>06 DICIEMBRE</strong><span>4:00 p. m.</span></div>
-          <div className="invite-buttons"><span>Ubicación</span><span>Confirmar</span></div>
+      <a className="phone" href={DEMO_URL} target="_blank" rel="noreferrer" aria-label="Abrir la invitación real de Baby Raquel">
+        <div className="phone-screen phone-video-screen">
+          <video
+            className="invite-video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster="./assets/raquel-scroll-poster-v1.jpg"
+            aria-hidden="true"
+          >
+            <source src="./assets/raquel-scroll-v1.webm" type="video/webm" />
+            <source src="./assets/raquel-scroll-v1.mp4" type="video/mp4" />
+          </video>
         </div>
-      </div>
+      </a>
     </div>
   );
 }
