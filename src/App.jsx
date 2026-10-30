@@ -4,29 +4,51 @@ const WHATSAPP_NUMBER = '50379532864';
 const DEMO_URL = 'https://babyraquel.sweetmomentssv.com';
 const INSTAGRAM_URL = 'https://www.instagram.com/sweet.momentssv/';
 
-const whatsappUrl = (message = 'SM-WEB Hola, me interesa una invitación digital de $25.') =>
+const whatsappUrl = (message = 'SM-WEB Hola, quiero crear una invitación digital para mi evento.') =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
-const included = [
-  { icon: '✦', title: 'Diseño personalizado', copy: 'Colores, tipografía y estilo inspirados en tu evento.' },
-  { icon: '◫', title: 'Galería de fotos', copy: 'Tus recuerdos presentados en una experiencia visual elegante.' },
-  { icon: '◷', title: 'Cuenta regresiva', copy: 'La emoción comienza antes del gran día.' },
-  { icon: '⌖', title: 'Ubicación fácil', copy: 'Botón directo a Maps o Waze para tus invitados.' },
-  { icon: '✓', title: 'RSVP por WhatsApp', copy: 'Confirmación de asistencia con un solo toque.' },
-  { icon: '↗', title: 'Link para compartir', copy: 'Listo para enviar por WhatsApp, Instagram o mensaje.' },
+const moments = [
+  {
+    id: 'baby',
+    tab: 'Baby shower',
+    eyebrow: 'La dulce espera',
+    name: 'Raquel',
+    line: 'Un día para celebrar todo el amor que está por llegar.',
+    date: '06 · DIC · 4:00 PM',
+    location: 'Jardín Magnolia',
+  },
+  {
+    id: 'wedding',
+    tab: 'Boda',
+    eyebrow: 'Nuestra historia',
+    name: 'Mía & Leo',
+    line: 'Nos elegimos para compartir la vida y queremos celebrarlo contigo.',
+    date: '14 · FEB · 5:30 PM',
+    location: 'Casa del Bosque',
+  },
+  {
+    id: 'birthday',
+    tab: 'Cumpleaños',
+    eyebrow: 'Una vuelta más al sol',
+    name: 'Sofía',
+    line: 'Risas, música y recuerdos para guardar por siempre.',
+    date: '22 · AGO · 3:00 PM',
+    location: 'Terraza Aurora',
+  },
 ];
 
-const steps = [
-  ['01', 'Cuéntanos tu idea', 'Compártenos los datos, fotos, colores y estilo del evento.'],
-  ['02', 'Creamos la magia', 'Diseñamos una experiencia digital cuidando cada detalle.'],
-  ['03', 'Revisas el diseño', 'Incluimos una revisión para ajustar textos o datos importantes.'],
-  ['04', 'Comparte tu momento', 'Recibes el enlace listo para enviarlo a todos tus invitados.'],
+const details = [
+  ['01', 'Una identidad para tu evento', 'Diseñamos colores, tipografía y detalles que se sienten tuyos.'],
+  ['02', 'Toda la información en un lugar', 'Fecha, hora, ubicación, galería, cuenta regresiva y notas importantes.'],
+  ['03', 'Confirmaciones más sencillas', 'Tus invitados pueden confirmar por WhatsApp con un solo toque.'],
+  ['04', 'Un enlace listo para compartir', 'Funciona perfecto desde el teléfono y se envía fácilmente a tus invitados.'],
 ];
 
-const themes = [
-  { id: 'sweet', label: 'Dulce', eyebrow: 'Baby shower', title: 'Un momento lleno de ilusión', date: 'SÁBADO · 4:00 PM' },
-  { id: 'joy', label: 'Alegre', eyebrow: 'Cumpleaños', title: 'Celebremos algo inolvidable', date: 'DOMINGO · 3:30 PM' },
-  { id: 'elegant', label: 'Elegante', eyebrow: 'Boda', title: 'El comienzo de nuestra historia', date: 'VIERNES · 5:00 PM' },
+const process = [
+  ['Cuéntanos', 'Nos compartes el tipo de evento, la fecha, el estilo, los textos y tus fotos.'],
+  ['Diseñamos', 'Creamos una experiencia digital cuidando la emoción y cada pequeño detalle.'],
+  ['La revisas', 'Te mostramos una vista previa antes de pagar para que puedas revisarla con calma.'],
+  ['La compartes', 'Después de aprobarla y realizar el pago, recibes el enlace final para tus invitados.'],
 ];
 
 function Reveal({ children, className = '', as: Tag = 'div', delay = 0, ...props }) {
@@ -37,45 +59,70 @@ function Reveal({ children, className = '', as: Tag = 'div', delay = 0, ...props
   );
 }
 
+function Brand() {
+  return (
+    <span className="brand-lockup">
+      <span className="brand-gem">SM</span>
+      <span className="brand-words"><strong>Sweet Moments</strong><small>Digital invitations</small></span>
+    </span>
+  );
+}
+
 function Header() {
   return (
     <header className="site-header">
-      <a className="brand" href="#inicio" aria-label="Sweet Moments SV, inicio">
-        <span className="brand-mark">SM</span>
-        <span><strong>Sweet Moments</strong><small>Digital invitations</small></span>
-      </a>
+      <a className="brand" href="#inicio" aria-label="Sweet Moments SV, inicio"><Brand /></a>
       <nav aria-label="Navegación principal">
-        <a href="#incluye">Incluye</a>
-        <a href="#proceso">Proceso</a>
-        <a href="#precio">Precio</a>
-        <a className="nav-cta" href={whatsappUrl()} target="_blank" rel="noreferrer">Quiero la mía</a>
+        <a href="#experiencia">Experiencia</a>
+        <a href="#incluye">Qué incluye</a>
+        <a href="#proceso">Cómo funciona</a>
+        <a className="nav-cta" href={whatsappUrl()} target="_blank" rel="noreferrer">Crear la mía</a>
       </nav>
     </header>
   );
 }
 
-function InvitationStudio() {
-  const [active, setActive] = useState(themes[0]);
+function HeroInvitation() {
   return (
-    <div className="studio" aria-label="Vista previa de estilos de invitación">
-      <div className="style-tabs" role="group" aria-label="Cambiar estilo de la invitación">
-        {themes.map((theme) => (
-          <button key={theme.id} className={active.id === theme.id ? 'active' : ''} onClick={() => setActive(theme)}>
-            {theme.label}
+    <div className="hero-art" aria-label="Ejemplo editorial de una invitación digital">
+      <div className="hero-frame-label"><span>Sweet Moments</span><small>Una experiencia hecha para compartir</small></div>
+      <div className="phone">
+        <div className="phone-island" />
+        <div className="phone-screen">
+          <span className="invite-kicker">BABY SHOWER</span>
+          <div className="invite-flower"><i /><i /><i /><b>R</b></div>
+          <p>Celebrando la llegada de</p>
+          <h3>Raquel</h3>
+          <em>La dulce espera está por terminar</em>
+          <div className="invite-date"><strong>06 DICIEMBRE</strong><span>4:00 p. m.</span></div>
+          <div className="invite-buttons"><span>Ubicación</span><span>Confirmar</span></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InvitationPreview() {
+  const [active, setActive] = useState(moments[0]);
+  return (
+    <div className="preview-studio">
+      <div className="preview-tabs" role="group" aria-label="Cambiar tipo de evento">
+        {moments.map((moment) => (
+          <button key={moment.id} className={active.id === moment.id ? 'active' : ''} onClick={() => setActive(moment)}>
+            {moment.tab}
           </button>
         ))}
       </div>
-      <div className={`invitation-card theme-${active.id}`}>
-        <span className="mini-spark spark-one">✦</span>
-        <span className="mini-spark spark-two">✦</span>
+      <div className={`preview-paper preview-${active.id}`}>
+        <div className="paper-corner corner-a" /><div className="paper-corner corner-b" />
         <p>{active.eyebrow}</p>
-        <div className="invitation-orbit"><span>SM</span></div>
-        <h3>{active.title}</h3>
-        <div className="mini-rule" />
-        <strong>{active.date}</strong>
-        <small>Desliza para descubrir todos los detalles</small>
+        <h3>{active.name}</h3>
+        <div className="paper-rule" />
+        <blockquote>{active.line}</blockquote>
+        <div className="paper-meta"><strong>{active.date}</strong><span>{active.location}</span></div>
+        <button type="button" tabIndex="-1">Confirmar asistencia</button>
       </div>
-      <span className="studio-note">Toca un estilo para transformar la invitación</span>
+      <span className="preview-hint">Toca un evento para cambiar la inspiración</span>
     </div>
   );
 }
@@ -85,7 +132,7 @@ function App() {
     const elements = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver(
       (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add('is-visible')),
-      { threshold: 0.12 },
+      { threshold: 0.1 },
     );
     elements.forEach((element) => observer.observe(element));
     return () => observer.disconnect();
@@ -93,152 +140,100 @@ function App() {
 
   return (
     <>
-      <div className="ambient ambient-one" />
-      <div className="ambient ambient-two" />
       <Header />
-
       <main id="inicio">
         <section className="hero shell">
-          <Reveal className="hero-copy" as="div">
-            <div className="eyebrow"><span /> Invitaciones que se sienten</div>
-            <h1>Tu momento merece algo <em>inolvidable.</em></h1>
-            <p className="hero-lead">Creamos invitaciones digitales personalizadas, elegantes y listas para compartir. Todo lo esencial, con un precio claro.</p>
+          <Reveal className="hero-copy">
+            <p className="eyebrow"><span /> INVITACIONES DIGITALES · HECHAS PARA SENTIRSE</p>
+            <h1>Antes de la celebración, <em>empieza la emoción.</em></h1>
+            <p className="hero-lead">Creamos invitaciones digitales con intención, personalidad y todos los detalles que tus invitados necesitan.</p>
             <div className="hero-actions">
-              <a className="button primary" href={whatsappUrl()} target="_blank" rel="noreferrer">Crear mi invitación <span>→</span></a>
-              <a className="button ghost" href={DEMO_URL} target="_blank" rel="noreferrer">Ver demo real</a>
+              <a className="button primary" href={whatsappUrl()} target="_blank" rel="noreferrer">Cuéntanos tu idea <span>↗</span></a>
+              <a className="button quiet" href={DEMO_URL} target="_blank" rel="noreferrer">Ver una invitación real</a>
             </div>
-            <div className="hero-trust">
-              <span>Diseño personalizado</span><i />
-              <span>Mobile-first</span><i />
-              <span>Lista para compartir</span>
-            </div>
+            <div className="hero-signals"><span>Personalizada</span><i /><span>Mobile-first</span><i /><span>Lista para compartir</span></div>
           </Reveal>
-
-          <Reveal className="hero-visual" delay={140}>
-            <div className="price-seal" aria-label="Precio fijo de 25 dólares">
-              <small>PRECIO FIJO</small><strong>$25</strong><span>por invitación</span>
-            </div>
-            <div className="phone-shell">
-              <div className="phone-top"><span /></div>
-              <div className="hero-phone-screen" role="img" aria-label="Ejemplo de una invitación digital Sweet Moments">
-                <span className="preview-event">Baby shower</span>
-                <div className="preview-bloom"><i /><i /><i /><b>R</b></div>
-                <p>Celebrando a</p>
-                <h3>Raquel</h3>
-                <small>La dulce espera está por terminar</small>
-                <div className="preview-date"><strong>DOMINGO 6 DE DICIEMBRE</strong><span>4:00 p.m.</span></div>
-                <div className="preview-features"><span>Cuenta regresiva</span><span>Galería</span><span>Ubicación</span><span>RSVP</span></div>
-                <div className="preview-rsvp">Confirmar asistencia</div>
-              </div>
-            </div>
-            <div className="float-card float-rsvp"><span>✓</span><div><strong>RSVP</strong><small>Confirmación sencilla</small></div></div>
-            <div className="float-card float-link"><span>↗</span><div><strong>Tu link</strong><small>Listo para compartir</small></div></div>
-            <div className="orbit orbit-a" /><div className="orbit orbit-b" />
-          </Reveal>
+          <Reveal className="hero-visual" delay={120}><HeroInvitation /></Reveal>
         </section>
 
-        <section className="marquee" aria-label="Tipos de eventos">
-          <div>
-            <span>Baby showers</span><b>✦</b><span>Cumpleaños</span><b>✦</b><span>Bodas</span><b>✦</b><span>Bautizos</span><b>✦</b><span>Graduaciones</span><b>✦</b><span>Gender reveals</span>
-          </div>
+        <section className="event-ribbon" aria-label="Tipos de celebraciones">
+          <div><span>Bodas</span><b>✦</b><span>Baby showers</span><b>✦</b><span>Cumpleaños</span><b>✦</b><span>Bautizos</span><b>✦</b><span>Graduaciones</span><b>✦</b><span>Celebraciones únicas</span></div>
         </section>
 
-        <section id="incluye" className="section shell">
-          <Reveal className="section-heading">
-            <p className="kicker">Todo lo que necesitas</p>
-            <h2>Una invitación, <em>muchos pequeños detalles.</em></h2>
-            <p>Creamos una experiencia completa para que tus invitados tengan toda la información a un toque.</p>
+        <section id="experiencia" className="experience section shell">
+          <Reveal className="section-intro split-heading">
+            <div><p className="kicker">Diseñamos la primera impresión</p><h2>Tu evento tiene una historia. <em>Hagamos que se sienta.</em></h2></div>
+            <p>De lo delicado a lo alegre, cada invitación toma la personalidad de tu celebración sin perder claridad ni facilidad de uso.</p>
           </Reveal>
-          <div className="feature-grid">
-            {included.map((item, index) => (
-              <Reveal as="article" className="feature-card" delay={index * 55} key={item.title}>
-                <span className="feature-icon">{item.icon}</span><h3>{item.title}</h3><p>{item.copy}</p>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal className="studio-wrap" delay={100}><InvitationPreview /></Reveal>
         </section>
 
-        <section className="section showcase-shell">
-          <div className="showcase-grid shell">
-            <Reveal className="showcase-copy">
-              <p className="kicker">Diseñada para sentirse única</p>
-              <h2>No es solo una invitación. Es la primera impresión de tu evento.</h2>
-              <p>No usamos una fórmula visual para todos. Adaptamos el ambiente, los colores y los detalles a tu celebración.</p>
-              <a className="text-link" href={DEMO_URL} target="_blank" rel="noreferrer">Explorar una invitación completa <span>↗</span></a>
+        <section id="incluye" className="details-section">
+          <div className="shell details-layout">
+            <Reveal className="details-title">
+              <p className="kicker light">Más que una fecha y un lugar</p>
+              <h2>Una experiencia pensada para <em>emocionar y facilitar.</em></h2>
+              <a className="inline-link" href={DEMO_URL} target="_blank" rel="noreferrer">Explorar demo completa <span>↗</span></a>
             </Reveal>
-            <Reveal delay={120}><InvitationStudio /></Reveal>
+            <div className="detail-list">
+              {details.map(([number, title, copy], index) => (
+                <Reveal as="article" className="detail-row" delay={index * 60} key={number}>
+                  <span>{number}</span><div><h3>{title}</h3><p>{copy}</p></div>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </section>
 
-        <section id="precio" className="section shell price-section">
-          <Reveal className="price-panel">
-            <div className="price-copy">
-              <p className="kicker">Un precio simple y transparente</p>
-              <h2>Todo por <em>$25</em></h2>
-              <p>Sin tener que calcular cada detalle. Tu invitación personalizada incluye las funciones esenciales y una revisión.</p>
-              <ul>
-                <li><span>✓</span> Diseño adaptado al estilo de tu evento</li>
-                <li><span>✓</span> Galería, cuenta regresiva, ubicación y RSVP</li>
-                <li><span>✓</span> Enlace listo para compartir</li>
-                <li><span>✓</span> Una revisión de textos y datos</li>
-              </ul>
-            </div>
-            <div className="price-card">
-              <span className="price-label">INVITACIÓN DIGITAL</span>
-              <div className="price-number"><sup>$</sup>25</div>
-              <p>Precio fijo por invitación</p>
-              <a className="button primary full" href={whatsappUrl()} target="_blank" rel="noreferrer">Comenzar por WhatsApp <span>→</span></a>
-              <small>Solicitudes especiales, urgentes o dominio personalizado se revisan por separado.</small>
-            </div>
+        <section id="proceso" className="process section shell">
+          <Reveal className="section-intro centered">
+            <p className="kicker">De tu idea al enlace</p>
+            <h2>Simple, cercano y <em>sin complicaciones.</em></h2>
           </Reveal>
-        </section>
-
-        <section id="proceso" className="section shell">
-          <Reveal className="section-heading compact">
-            <p className="kicker">Simple de principio a fin</p>
-            <h2>Así creamos tu <em>Sweet Moment.</em></h2>
-          </Reveal>
-          <div className="steps-grid">
-            {steps.map(([number, title, copy], index) => (
-              <Reveal as="article" className="step-card" delay={index * 70} key={number}>
-                <span>{number}</span><div><h3>{title}</h3><p>{copy}</p></div>
+          <div className="process-grid">
+            {process.map(([title, copy], index) => (
+              <Reveal as="article" className="process-card" delay={index * 70} key={title}>
+                <span>0{index + 1}</span><h3>{title}</h3><p>{copy}</p>
               </Reveal>
             ))}
           </div>
+
+          <Reveal className="service-note">
+            <div><span className="service-dot" /><div><small>INVITACIÓN DIGITAL ESTÁNDAR</small><strong>Una propuesta clara y completa para tu evento</strong></div></div>
+            <div className="service-price" aria-label="Precio: 25 dólares"><span>$</span><strong>25</strong></div>
+            <a className="button dark" href={whatsappUrl()} target="_blank" rel="noreferrer">Empezar por WhatsApp <span>↗</span></a>
+          </Reveal>
         </section>
 
-        <section className="section shell faq-section">
-          <Reveal className="section-heading compact">
-            <p className="kicker">Preguntas frecuentes</p>
-            <h2>Antes de comenzar</h2>
-          </Reveal>
+        <section className="faq section shell">
+          <Reveal className="section-intro centered"><p className="kicker">Antes de comenzar</p><h2>Lo importante, <em>sin letra pequeña.</em></h2></Reveal>
           <div className="faq-grid">
-            <Reveal as="article"><h3>Cuánto cuesta?</h3><p>La invitación digital estándar tiene un precio fijo de <strong>$25</strong>.</p></Reveal>
-            <Reveal as="article" delay={50}><h3>Cuánto tarda?</h3><p>Normalmente entre 24 y 48 horas después de recibir la información y confirmar el anticipo.</p></Reveal>
-            <Reveal as="article" delay={100}><h3>Puedo pedir cambios?</h3><p>Sí. Incluimos una revisión para corregir textos, datos o detalles importantes.</p></Reveal>
-            <Reveal as="article" delay={150}><h3>Qué necesito enviar?</h3><p>Fecha, hora, lugar, tema, colores, fotos y los detalles que quieras mostrar.</p></Reveal>
+            <Reveal as="article"><span>01</span><h3>Tengo que pagar primero?</h3><p>No. Te mostramos una vista previa para que la revises y solo pagas por transferencia bancaria si te gusta.</p></Reveal>
+            <Reveal as="article" delay={50}><span>02</span><h3>Cuánto tarda?</h3><p>La vista previa normalmente está lista entre 24 y 48 horas después de recibir toda la información.</p></Reveal>
+            <Reveal as="article" delay={100}><span>03</span><h3>Puedo pedir cambios?</h3><p>Sí. Incluimos una revisión para ajustar textos, datos o detalles importantes.</p></Reveal>
+            <Reveal as="article" delay={150}><span>04</span><h3>Qué necesito enviar?</h3><p>Fecha, hora, lugar, tema, colores, fotos y cualquier detalle que quieras incluir.</p></Reveal>
           </div>
         </section>
 
-        <section className="section shell final-section">
+        <section className="final-section shell">
           <Reveal className="final-card">
-            <span className="final-spark">✦</span>
-            <p className="kicker">Tu celebración comienza aquí</p>
-            <h2>Hagamos algo tan especial como tu momento.</h2>
-            <p>Escríbenos y cuéntanos qué estás celebrando.</p>
-            <a className="button light" href={whatsappUrl()} target="_blank" rel="noreferrer">Quiero mi invitación por $25 <span>→</span></a>
+            <div className="final-mark">SM</div>
+            <p className="kicker light">Sweet Moments SV</p>
+            <h2>Tu celebración merece una entrada <em>tan especial como el momento.</em></h2>
+            <p>Cuéntanos qué estás celebrando y empecemos a imaginarla juntos.</p>
+            <a className="button cream" href={whatsappUrl()} target="_blank" rel="noreferrer">Crear mi invitación <span>↗</span></a>
           </Reveal>
         </section>
       </main>
 
       <footer className="shell">
-        <a className="brand footer-brand" href="#inicio"><span className="brand-mark">SM</span><span><strong>Sweet Moments</strong><small>Digital invitations</small></span></a>
+        <a className="brand" href="#inicio"><Brand /></a>
         <p>Invitaciones digitales para los momentos más dulces de la vida.</p>
-        <div><a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">Instagram</a><span>·</span><a href={whatsappUrl()} target="_blank" rel="noreferrer">WhatsApp</a></div>
+        <div className="footer-links"><a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">Instagram</a><a href={whatsappUrl()} target="_blank" rel="noreferrer">WhatsApp</a></div>
         <small>© {new Date().getFullYear()} Sweet Moments SV</small>
       </footer>
 
-      <a className="floating-whatsapp" href={whatsappUrl()} target="_blank" rel="noreferrer" aria-label="Escribir a Sweet Moments por WhatsApp"><span>WA</span></a>
+      <a className="floating-whatsapp" href={whatsappUrl()} target="_blank" rel="noreferrer" aria-label="Escribir a Sweet Moments por WhatsApp">WA</a>
     </>
   );
 }
