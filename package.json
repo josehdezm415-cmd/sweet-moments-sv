@@ -10,8 +10,11 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
-    "vite": "latest",
+    "framer-motion": "^12.23.24",
+    "motion-dom": "12.23.23",
+    "motion-utils": "12.23.6",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "vite": "latest"
   }
 }

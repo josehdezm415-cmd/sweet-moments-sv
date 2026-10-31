@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 
 const WHATSAPP_NUMBER = '50379532864';
 const DEMO_URL = 'https://babyraquel.sweetmomentssv.com';
@@ -60,24 +61,33 @@ const moments = [
 ];
 
 const details = [
-  ['01', 'Una identidad para tu evento', 'Diseñamos colores, tipografía y detalles que se sienten tuyos.'],
-  ['02', 'Toda la información en un lugar', 'Fecha, hora, ubicación, galería, cuenta regresiva y notas importantes.'],
-  ['03', 'Confirmaciones más sencillas', 'Tus invitados pueden confirmar por WhatsApp con un solo toque.'],
-  ['04', 'Un enlace listo para compartir', 'Funciona perfecto desde el teléfono y se envía fácilmente a tus invitados.'],
+  ['01', 'Diseño con identidad propia', 'Colores, tipografía y detalles creados alrededor de la esencia de tu celebración.'],
+  ['02', 'Todo, bellamente reunido', 'Fecha, hora, ubicación, galería, cuenta regresiva y cada detalle importante.'],
+  ['03', 'Confirmar se vuelve sencillo', 'Tus invitados responden por WhatsApp con un solo toque y sin formularios complicados.'],
+  ['04', 'Un enlace hecho para compartir', 'Se ve precioso en el teléfono y llega a todos en segundos.'],
 ];
 
 const process = [
-  ['Cuéntanos', 'Nos compartes el tipo de evento, la fecha, el estilo, los textos y tus fotos.'],
-  ['Diseñamos', 'Creamos una experiencia digital cuidando la emoción y cada pequeño detalle.'],
-  ['La revisas', 'Te mostramos una vista previa antes de pagar para que puedas revisarla con calma.'],
-  ['La compartes', 'Después de aprobarla y realizar el pago, recibes el enlace final para tus invitados.'],
+  ['Comparte tu idea', 'Nos envías el tipo de evento, la fecha, el estilo, los textos y tus fotos.'],
+  ['Le damos forma', 'Creamos una experiencia digital cuidando la emoción y cada pequeño detalle.'],
+  ['Revisa con calma', 'Recibes una vista previa protegida antes de pagar y puedes solicitar tu revisión incluida.'],
+  ['Celebra y comparte', 'Después de aprobar y realizar el pago, recibes el enlace final sin marca de agua.'],
 ];
 
 function Reveal({ children, className = '', as: Tag = 'div', delay = 0, ...props }) {
+  const reduceMotion = useReducedMotion();
+  const MotionTag = Tag === 'article' ? motion.article : Tag === 'section' ? motion.section : motion.div;
   return (
-    <Tag className={`reveal ${className}`} style={{ '--delay': `${delay}ms` }} {...props}>
+    <MotionTag
+      className={`reveal ${className}`}
+      initial={reduceMotion ? false : { opacity: 0, y: 26 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.16 }}
+      transition={{ duration: 0.68, delay: delay / 1000, ease: [0.22, 1, 0.36, 1] }}
+      {...props}
+    >
       {children}
-    </Tag>
+    </MotionTag>
   );
 }
 
@@ -104,13 +114,47 @@ function Header() {
   );
 }
 
+function FloatingWhatsapp() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const updateVisibility = () => setVisible(window.scrollY > 520);
+    updateVisibility();
+    window.addEventListener('scroll', updateVisibility, { passive: true });
+    return () => window.removeEventListener('scroll', updateVisibility);
+  }, []);
+
+  return (
+    <motion.a
+      className="floating-whatsapp"
+      href={whatsappUrl()}
+      target="_blank"
+      rel="noreferrer"
+      aria-label="Escribir a Sweet Moments por WhatsApp"
+      aria-hidden={!visible}
+      tabIndex={visible ? 0 : -1}
+      initial={false}
+      animate={visible ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.82, y: 12 }}
+      whileHover={visible ? { scale: 1.06 } : undefined}
+      whileTap={visible ? { scale: 0.94 } : undefined}
+      transition={{ type: 'spring', stiffness: 360, damping: 25 }}
+      style={{ pointerEvents: visible ? 'auto' : 'none', visibility: visible ? 'visible' : 'hidden' }}
+    >
+      WA
+    </motion.a>
+  );
+}
+
 function HeroInvitation() {
   const [activeDemo, setActiveDemo] = useState(heroDemos[0]);
+  const reduceMotion = useReducedMotion();
 
   return (
     <div className="hero-art" aria-label="Ejemplo editorial de una invitación digital">
+      <div className="hero-ambient hero-ambient-one" aria-hidden="true" />
+      <div className="hero-ambient hero-ambient-two" aria-hidden="true" />
       <div className="hero-demo-head">
-        <div className="hero-frame-label"><span>Sweet Moments</span><small>Invitaciones reales · toca para explorar</small></div>
+        <div className="hero-frame-label"><span>Invitaciones en movimiento</span><small>Elige una celebración y mira la experiencia</small></div>
         <div className="hero-demo-picker" role="group" aria-label="Cambiar demostración">
           {heroDemos.map((demo) => (
             <button
@@ -120,35 +164,58 @@ function HeroInvitation() {
               onClick={() => setActiveDemo(demo)}
               aria-pressed={activeDemo.id === demo.id}
             >
-              {demo.tab}
+              {activeDemo.id === demo.id && <motion.span className="picker-active" layoutId="hero-demo-active" transition={{ type: 'spring', stiffness: 430, damping: 34 }} />}
+              <span className="picker-label">{demo.tab}</span>
             </button>
           ))}
         </div>
       </div>
-      <a className="phone" href={activeDemo.url} target="_blank" rel="noreferrer" aria-label={`Abrir la invitación real: ${activeDemo.label}`}>
+      <motion.a
+        className="phone"
+        href={activeDemo.url}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={`Abrir la invitación real: ${activeDemo.label}`}
+        whileHover={reduceMotion ? undefined : { y: -7, scale: 1.012 }}
+        whileTap={{ scale: 0.992 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+      >
+        <span className="phone-button phone-button-top" aria-hidden="true" />
+        <span className="phone-button phone-button-mid" aria-hidden="true" />
+        <span className="phone-button phone-button-side" aria-hidden="true" />
         <div className="phone-screen phone-video-screen">
-          <video
-            key={activeDemo.id}
-            className="invite-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            poster={activeDemo.poster}
-            aria-hidden="true"
-          >
-            <source src={activeDemo.webm} type="video/webm" />
-            <source src={activeDemo.mp4} type="video/mp4" />
-          </video>
+          <AnimatePresence initial={false} mode="popLayout">
+            <motion.video
+              key={activeDemo.id}
+              className="invite-video"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              poster={activeDemo.poster}
+              onCanPlay={(event) => event.currentTarget.play().catch(() => {})}
+              aria-hidden="true"
+              initial={reduceMotion ? false : { opacity: 0, scale: 1.018 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={reduceMotion ? undefined : { opacity: 0, scale: 0.995 }}
+              transition={{ duration: 0.46, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <source src={activeDemo.webm} type="video/webm" />
+              <source src={activeDemo.mp4} type="video/mp4" />
+            </motion.video>
+          </AnimatePresence>
+          <span className="screen-sheen" aria-hidden="true" />
         </div>
-      </a>
+      </motion.a>
+      <div className="demo-caption"><span className="live-dot" />Demo real · toca el teléfono para abrirla</div>
     </div>
   );
 }
 
 function InvitationPreview() {
   const [active, setActive] = useState(moments[0]);
+  const reduceMotion = useReducedMotion();
   return (
     <div className="preview-studio">
       <div className="preview-tabs" role="group" aria-label="Cambiar tipo de evento">
@@ -158,45 +225,44 @@ function InvitationPreview() {
           </button>
         ))}
       </div>
-      <div className={`preview-paper preview-${active.id}`}>
-        <div className="paper-corner corner-a" /><div className="paper-corner corner-b" />
-        <p>{active.eyebrow}</p>
-        <h3>{active.name}</h3>
-        <div className="paper-rule" />
-        <blockquote>{active.line}</blockquote>
-        <div className="paper-meta"><strong>{active.date}</strong><span>{active.location}</span></div>
-        <button type="button" tabIndex="-1">Confirmar asistencia</button>
-      </div>
+      <AnimatePresence initial={false} mode="wait">
+        <motion.div
+          key={active.id}
+          className={`preview-paper preview-${active.id}`}
+          initial={reduceMotion ? false : { opacity: 0, y: 12, rotate: -0.5 }}
+          animate={{ opacity: 1, y: 0, rotate: 0 }}
+          exit={reduceMotion ? undefined : { opacity: 0, y: -8, rotate: 0.4 }}
+          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="paper-corner corner-a" /><div className="paper-corner corner-b" />
+          <p>{active.eyebrow}</p>
+          <h3>{active.name}</h3>
+          <div className="paper-rule" />
+          <blockquote>{active.line}</blockquote>
+          <div className="paper-meta"><strong>{active.date}</strong><span>{active.location}</span></div>
+          <button type="button" tabIndex="-1">Confirmar asistencia</button>
+        </motion.div>
+      </AnimatePresence>
       <span className="preview-hint">Toca un evento para cambiar la inspiración</span>
     </div>
   );
 }
 
 function App() {
-  useEffect(() => {
-    const elements = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add('is-visible')),
-      { threshold: 0.1 },
-    );
-    elements.forEach((element) => observer.observe(element));
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <>
       <Header />
       <main id="inicio">
         <section className="hero shell">
           <Reveal className="hero-copy">
-            <p className="eyebrow"><span /> INVITACIONES DIGITALES · HECHAS PARA SENTIRSE</p>
-            <h1>Antes de la celebración, <em>empieza la emoción.</em></h1>
-            <p className="hero-lead">Creamos invitaciones digitales con intención, personalidad y todos los detalles que tus invitados necesitan.</p>
+            <p className="eyebrow"><span /> INVITACIONES DIGITALES · DISEÑADAS PARA RECORDARSE</p>
+            <h1>La emoción comienza <em>antes del gran día.</em></h1>
+            <p className="hero-lead">Transformamos los detalles de tu celebración en una experiencia digital hermosa, clara y fácil de compartir.</p>
             <div className="hero-actions">
-              <a className="button primary" href={whatsappUrl()} target="_blank" rel="noreferrer">Cuéntanos tu idea <span>↗</span></a>
-              <a className="button quiet" href={DEMO_URL} target="_blank" rel="noreferrer">Ver una invitación real</a>
+              <a className="button primary" href={whatsappUrl()} target="_blank" rel="noreferrer">Quiero crear la mía <span>↗</span></a>
+              <a className="button quiet" href="#experiencia">Descubrir la experiencia</a>
             </div>
-            <div className="hero-signals"><span>Personalizada</span><i /><span>Mobile-first</span><i /><span>Lista para compartir</span></div>
+            <div className="hero-signals"><span>Diseño a tu medida</span><i /><span>Perfecta en tu teléfono</span><i /><span>Lista para compartir</span></div>
           </Reveal>
           <Reveal className="hero-visual" delay={120}><HeroInvitation /></Reveal>
         </section>
@@ -207,8 +273,8 @@ function App() {
 
         <section id="experiencia" className="experience section shell">
           <Reveal className="section-intro split-heading">
-            <div><p className="kicker">Diseñamos la primera impresión</p><h2>Tu evento tiene una historia. <em>Hagamos que se sienta.</em></h2></div>
-            <p>De lo delicado a lo alegre, cada invitación toma la personalidad de tu celebración sin perder claridad ni facilidad de uso.</p>
+            <div><p className="kicker">Mucho más que una invitación</p><h2>No solo se abre. <em>Se vive.</em></h2></div>
+            <p>Cada diseño traduce el estilo de tu celebración en una experiencia que emociona, orienta y acompaña a tus invitados.</p>
           </Reveal>
           <Reveal className="studio-wrap" delay={100}><InvitationPreview /></Reveal>
         </section>
@@ -216,8 +282,8 @@ function App() {
         <section id="incluye" className="details-section">
           <div className="shell details-layout">
             <Reveal className="details-title">
-              <p className="kicker light">Más que una fecha y un lugar</p>
-              <h2>Una experiencia pensada para <em>emocionar y facilitar.</em></h2>
+              <p className="kicker light">Todo lo esencial, en armonía</p>
+              <h2>Detalles que enamoran. <em>Funciones que ayudan.</em></h2>
               <a className="inline-link" href={DEMO_URL} target="_blank" rel="noreferrer">Explorar demo completa <span>↗</span></a>
             </Reveal>
             <div className="detail-list">
@@ -232,8 +298,8 @@ function App() {
 
         <section id="proceso" className="process section shell">
           <Reveal className="section-intro centered">
-            <p className="kicker">De tu idea al enlace</p>
-            <h2>Simple, cercano y <em>sin complicaciones.</em></h2>
+            <p className="kicker">De la idea al primer mensaje</p>
+            <h2>Cuatro pasos. <em>Cero complicaciones.</em></h2>
           </Reveal>
           <div className="process-grid">
             {process.map(([title, copy], index) => (
@@ -251,7 +317,7 @@ function App() {
         </section>
 
         <section className="faq section shell">
-          <Reveal className="section-intro centered"><p className="kicker">Antes de comenzar</p><h2>Lo importante, <em>sin letra pequeña.</em></h2></Reveal>
+          <Reveal className="section-intro centered"><p className="kicker">Antes de crear la tuya</p><h2>Respuestas claras, <em>desde el principio.</em></h2></Reveal>
           <div className="faq-grid">
             <Reveal as="article"><span>01</span><h3>Tengo que pagar primero?</h3><p>No. Te mostramos una vista previa para que la revises y solo pagas por transferencia bancaria si te gusta.</p></Reveal>
             <Reveal as="article" delay={50}><span>02</span><h3>Cuánto tarda?</h3><p>La vista previa normalmente está lista entre 24 y 48 horas después de recibir toda la información.</p></Reveal>
@@ -264,8 +330,8 @@ function App() {
           <Reveal className="final-card">
             <div className="final-mark">SM</div>
             <p className="kicker light">Sweet Moments SV</p>
-            <h2>Tu celebración merece una entrada <em>tan especial como el momento.</em></h2>
-            <p>Cuéntanos qué estás celebrando y empecemos a imaginarla juntos.</p>
+            <h2>Haz que la emoción empiece <em>desde el primer mensaje.</em></h2>
+            <p>Cuéntanos qué estás celebrando y creemos una invitación que se sienta completamente tuya.</p>
             <a className="button cream" href={whatsappUrl()} target="_blank" rel="noreferrer">Crear mi invitación <span>↗</span></a>
           </Reveal>
         </section>
@@ -278,7 +344,7 @@ function App() {
         <small>© {new Date().getFullYear()} Sweet Moments SV</small>
       </footer>
 
-      <a className="floating-whatsapp" href={whatsappUrl()} target="_blank" rel="noreferrer" aria-label="Escribir a Sweet Moments por WhatsApp">WA</a>
+      <FloatingWhatsapp />
     </>
   );
 }
