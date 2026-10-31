@@ -198,8 +198,7 @@ h1 { max-width: 710px; margin-bottom: 24px; font-size: clamp(3.7rem, 6.3vw, 6.5r
 .faq { padding-top: 25px; }
 .faq-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 13px; }
 .faq-grid article { position: relative; padding: 28px; border: 1px solid var(--line); border-radius: 22px; background: rgba(255,255,255,.45); }
-.faq-grid article > span { position: absolute; top: 24px; right: 25px; color: var(--rose); font-family: var(--display); font-size: 1rem; }
-.faq-grid h3 { margin: 0 40px 8px 0; font-family: var(--display); font-size: 1.25rem; font-weight: 400; }
+.faq-grid h3 { margin: 0 0 8px; font-family: var(--display); font-size: 1.25rem; font-weight: 400; }
 .faq-grid p { margin-bottom: 0; color: var(--muted); font-size: .85rem; }
 .final-section { padding: 25px 0 100px; }
 .final-card { position: relative; padding: clamp(60px,9vw,105px) 28px; overflow: hidden; color: white; text-align: center; border-radius: 36px; background: radial-gradient(circle at 50% 0,rgba(255,255,255,.15),transparent 19rem), linear-gradient(135deg,#4b1d2e,#7b2944 62%,#a14361); box-shadow: 0 30px 75px rgba(66,27,40,.22); }

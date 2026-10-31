@@ -324,10 +324,10 @@ function App() {
         <section className="faq section shell">
           <Reveal className="section-intro centered"><p className="kicker">Antes de crear la tuya</p><h2>Respuestas claras, <em>desde el principio.</em></h2></Reveal>
           <div className="faq-grid">
-            <Reveal as="article"><span>01</span><h3>Tengo que pagar primero?</h3><p>No. Te mostramos una vista previa para que la revises y solo pagas por transferencia bancaria si te gusta.</p></Reveal>
-            <Reveal as="article" delay={50}><span>02</span><h3>Cuánto tarda?</h3><p>La vista previa normalmente está lista entre 24 y 48 horas después de recibir toda la información.</p></Reveal>
-            <Reveal as="article" delay={100}><span>03</span><h3>Puedo pedir cambios?</h3><p>Sí. Incluimos una revisión para ajustar textos, datos o detalles importantes.</p></Reveal>
-            <Reveal as="article" delay={150}><span>04</span><h3>Qué necesito enviar?</h3><p>Fecha, hora, lugar, tema, colores, fotos y cualquier detalle que quieras incluir.</p></Reveal>
+            <Reveal as="article"><h3>Tengo que pagar primero?</h3><p>No. Te mostramos una vista previa para que la revises y solo pagas por transferencia bancaria si te gusta.</p></Reveal>
+            <Reveal as="article" delay={50}><h3>Cuánto tarda?</h3><p>La vista previa normalmente está lista entre 24 y 48 horas después de recibir toda la información.</p></Reveal>
+            <Reveal as="article" delay={100}><h3>Puedo pedir cambios?</h3><p>Sí. Incluimos una revisión para ajustar textos, datos o detalles importantes.</p></Reveal>
+            <Reveal as="article" delay={150}><h3>Qué necesito enviar?</h3><p>Fecha, hora, lugar, tema, colores, fotos y cualquier detalle que quieras incluir.</p></Reveal>
           </div>
         </section>
 
