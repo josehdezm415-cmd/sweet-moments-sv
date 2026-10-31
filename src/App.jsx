@@ -37,36 +37,6 @@ const heroDemos = [
 const whatsappUrl = (message = 'SM-WEB Hola, quiero crear una invitación digital para mi evento.') =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
-const moments = [
-  {
-    id: 'baby',
-    tab: 'Baby shower',
-    eyebrow: 'La dulce espera',
-    name: 'Raquel',
-    line: 'Un día para celebrar todo el amor que está por llegar.',
-    date: '06 · DIC · 4:00 PM',
-    location: 'Jardín Magnolia',
-  },
-  {
-    id: 'wedding',
-    tab: 'Boda',
-    eyebrow: 'Nuestra historia',
-    name: 'Mía & Leo',
-    line: 'Nos elegimos para compartir la vida y queremos celebrarlo contigo.',
-    date: '14 · FEB · 5:30 PM',
-    location: 'Casa del Bosque',
-  },
-  {
-    id: 'birthday',
-    tab: 'Cumpleaños',
-    eyebrow: 'Una vuelta más al sol',
-    name: 'Sofía',
-    line: 'Risas, música y recuerdos para guardar por siempre.',
-    date: '22 · AGO · 3:00 PM',
-    location: 'Terraza Aurora',
-  },
-];
-
 const details = [
   ['01', 'Diseño con identidad propia', 'Colores, tipografía y detalles creados alrededor de la esencia de tu celebración.'],
   ['02', 'Todo, bellamente reunido', 'Fecha, hora, ubicación, galería, cuenta regresiva y cada detalle importante.'],
@@ -169,7 +139,6 @@ function Header() {
     <header className="site-header">
       <a className="brand" href="#inicio" aria-label="Sweet Moments SV, inicio"><Brand /></a>
       <nav aria-label="Navegación principal">
-        <a href="#experiencia">Experiencia</a>
         <a href="#incluye">Qué incluye</a>
         <a href="#proceso">Cómo funciona</a>
         <a className="nav-cta" href={whatsappUrl()} target="_blank" rel="noreferrer">Crear la mía</a>
@@ -291,41 +260,6 @@ function HeroInvitation() {
   );
 }
 
-function InvitationPreview() {
-  const [active, setActive] = useState(moments[0]);
-  const reduceMotion = useReducedMotion();
-  return (
-    <div className="preview-studio">
-      <div className="preview-tabs" role="group" aria-label="Cambiar tipo de evento">
-        {moments.map((moment) => (
-          <button key={moment.id} className={active.id === moment.id ? 'active' : ''} onClick={() => setActive(moment)}>
-            {moment.tab}
-          </button>
-        ))}
-      </div>
-      <AnimatePresence initial={false} mode="wait">
-        <motion.div
-          key={active.id}
-          className={`preview-paper preview-${active.id}`}
-          initial={reduceMotion ? false : { opacity: 0, y: 12, rotate: -0.5 }}
-          animate={{ opacity: 1, y: 0, rotate: 0 }}
-          exit={reduceMotion ? undefined : { opacity: 0, y: -8, rotate: 0.4 }}
-          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <div className="paper-corner corner-a" /><div className="paper-corner corner-b" />
-          <p>{active.eyebrow}</p>
-          <h3>{active.name}</h3>
-          <div className="paper-rule" />
-          <blockquote>{active.line}</blockquote>
-          <div className="paper-meta"><strong>{active.date}</strong><span>{active.location}</span></div>
-          <button type="button" tabIndex="-1">Confirmar asistencia</button>
-        </motion.div>
-      </AnimatePresence>
-      <span className="preview-hint">Toca un evento para cambiar la inspiración</span>
-    </div>
-  );
-}
-
 function App() {
   return (
     <>
@@ -339,7 +273,7 @@ function App() {
             <p className="hero-lead">Transformamos los detalles de tu celebración en una experiencia digital hermosa, clara y fácil de compartir.</p>
             <div className="hero-actions">
               <MotionCta className="primary" href={whatsappUrl()} target="_blank" rel="noreferrer">Quiero crear la mía <span className="cta-arrow">↗</span></MotionCta>
-              <a className="button quiet" href="#experiencia">Descubrir la experiencia</a>
+              <a className="button quiet" href="#incluye">Ver qué incluye</a>
             </div>
             <div className="hero-signals"><span>Diseño a tu medida</span><i /><span>Perfecta en tu teléfono</span><i /><span>Lista para compartir</span></div>
           </Reveal>
@@ -348,14 +282,6 @@ function App() {
 
         <section className="event-ribbon" aria-label="Tipos de celebraciones">
           <div><span>Bodas</span><b>✦</b><span>Baby showers</span><b>✦</b><span>Cumpleaños</span><b>✦</b><span>Bautizos</span><b>✦</b><span>Graduaciones</span><b>✦</b><span>Celebraciones únicas</span></div>
-        </section>
-
-        <section id="experiencia" className="experience section shell">
-          <Reveal className="section-intro split-heading">
-            <div><p className="kicker">Mucho más que una invitación</p><h2>No solo se abre. <em>Se vive.</em></h2></div>
-            <p>Cada diseño traduce el estilo de tu celebración en una experiencia que emociona, orienta y acompaña a tus invitados.</p>
-          </Reveal>
-          <Reveal className="studio-wrap" delay={100}><InvitationPreview /></Reveal>
         </section>
 
         <section id="incluye" className="details-section">
