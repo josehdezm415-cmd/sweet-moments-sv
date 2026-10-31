@@ -235,12 +235,18 @@ body { background: #f8f5ef; }
 .details-section { background: #302028; }
 .process-grid { gap: 22px; }
 .process-card { min-height: 245px; padding: 26px 4px; border: 0; border-top: 1px solid var(--line); border-radius: 0; background: transparent; }
-.service-note { margin-top: 34px; padding: 24px 26px; color: var(--ink); border: 1px solid var(--line); border-radius: 20px; background: var(--paper); box-shadow: none; }
+.service-note { margin-top: 34px; padding: 26px; color: var(--ink); border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(135deg, #fffdf8, #f5eee7); box-shadow: 0 20px 50px rgba(66,27,40,.07); }
 .service-note small { color: var(--muted); opacity: 1; }
-.service-dot { border: 0; background: var(--wine); }
-.service-price { min-width: 82px; display: flex; align-items: baseline; justify-content: center; gap: 2px; color: var(--wine-deep); line-height: 1; }
-.service-price span { font-family: var(--body); font-size: 1.15rem; font-weight: 700; }
-.service-price strong { font-family: var(--display); font-size: 2.9rem; font-weight: 400; letter-spacing: -.04em; }
+.service-copy { display: block !important; }
+.service-copy small { color: var(--wine); }
+.service-copy strong { max-width: 500px; margin-top: 7px !important; font-family: var(--display); font-size: clamp(1.45rem,2.2vw,2rem) !important; font-weight: 400; line-height: 1.08; }
+.service-copy p { max-width: 540px; margin: 9px 0 0; color: var(--muted); font-size: .8rem; }
+.service-price { min-width: 164px; padding: 14px 18px 13px; display: grid; justify-items: center; color: white; border-radius: 17px; background: linear-gradient(145deg, var(--wine-deep), #7e2948); box-shadow: 0 16px 34px rgba(73,25,42,.24); line-height: 1; }
+.service-price > small { color: #f0d58b; font-size: .53rem; letter-spacing: .16em; }
+.service-price-value { margin: 2px 0 3px; display: flex; align-items: baseline; justify-content: center; gap: 3px; }
+.service-price-value span { font-family: var(--body); font-size: 1.3rem; font-weight: 800; }
+.service-price-value strong { font-family: var(--display); font-size: 3.65rem; font-weight: 400; letter-spacing: -.055em; }
+.service-price em { color: rgba(255,255,255,.72); font-family: var(--body); font-size: .58rem; font-style: normal; line-height: 1.25; }
 .button.dark { color: white; background: var(--wine-deep); }
 .faq-grid article { background: transparent; }
 .final-card { background: #3b222c; box-shadow: none; }
@@ -381,8 +387,9 @@ body { background: #f8f5ef; }
   .details-section { padding-block: 82px; }
   .process-grid, .faq-grid { grid-template-columns: 1fr; }
   .process-card { min-height: 220px; }
-  .service-note { padding: 20px; grid-template-columns: 1fr auto; gap: 16px; }
-  .service-note > div:first-child strong { max-width: 220px; }
+  .service-note { padding: 22px; grid-template-columns: 1fr; gap: 18px; text-align: center; }
+  .service-copy strong, .service-copy p { margin-inline: auto; }
+  .service-price { min-width: min(230px,100%); margin-inline: auto; }
   .service-note .button { width: 100%; }
   .final-card { border-radius: 28px; }
   .final-card .button { width: 100%; }
@@ -398,9 +405,6 @@ body { background: #f8f5ef; }
   .art-orbit.orbit-one { width: 310px; height: 310px; }
   .art-orbit.orbit-two { width: 270px; height: 270px; }
   .swatch { display: none; }
-  .service-note { grid-template-columns: 1fr; text-align: center; }
-  .service-note > div:first-child { justify-content: center; }
-  .service-price { padding-block: 5px; }
 }
 
 @keyframes phoneFloatMobile { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }

@@ -315,9 +315,17 @@ function App() {
           </div>
 
           <Reveal className="service-note">
-            <div><span className="service-dot" /><div><small>INVITACIÓN DIGITAL ESTÁNDAR</small><strong>Una propuesta clara y completa para tu evento</strong></div></div>
-            <div className="service-price" aria-label="Precio: 25 dólares"><span>$</span><strong>25</strong></div>
-            <MotionCta className="dark" href={whatsappUrl()} target="_blank" rel="noreferrer">Empezar por WhatsApp <span className="cta-arrow">↗</span></MotionCta>
+            <div className="service-copy">
+              <small>INVITACIÓN DIGITAL PERSONALIZADA</small>
+              <strong>Todo lo que tu evento necesita, en un solo enlace.</strong>
+              <p>Diseñada a tu medida, lista para compartir y fácil para tus invitados.</p>
+            </div>
+            <div className="service-price" aria-label="Precio único: 25 dólares">
+              <small>PRECIO ÚNICO</small>
+              <div className="service-price-value"><span>$</span><strong>25</strong></div>
+              <em>Vista previa antes de pagar</em>
+            </div>
+            <MotionCta className="dark" href={whatsappUrl()} target="_blank" rel="noreferrer">Crear mi invitación <span className="cta-arrow">↗</span></MotionCta>
           </Reveal>
         </section>
 
