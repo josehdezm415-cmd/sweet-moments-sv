@@ -1,5 +1,12 @@
-import { useEffect, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from 'framer-motion';
 
 const WHATSAPP_NUMBER = '50379532864';
 const DEMO_URL = 'https://babyraquel.sweetmomentssv.com';
@@ -91,6 +98,63 @@ function Reveal({ children, className = '', as: Tag = 'div', delay = 0, ...props
   );
 }
 
+function ScrollProgress() {
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 150, damping: 28, mass: 0.22 });
+
+  if (reduceMotion) return null;
+
+  return <motion.div className="scroll-progress" style={{ scaleX }} aria-hidden="true" />;
+}
+
+function KineticHeadline() {
+  const reduceMotion = useReducedMotion();
+  const lineMotion = reduceMotion
+    ? undefined
+    : {
+        initial: { y: '115%', opacity: 0 },
+        animate: { y: '0%', opacity: 1 },
+      };
+
+  return (
+    <h1 className="kinetic-heading" aria-label="La emoción comienza antes del gran día.">
+      <span className="kinetic-line">
+        <motion.span
+          {...lineMotion}
+          transition={{ duration: 0.82, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+        >
+          La emoción comienza{' '}
+        </motion.span>
+      </span>
+      <span className="kinetic-line kinetic-accent">
+        <motion.em
+          {...lineMotion}
+          transition={{ duration: 0.86, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        >
+          antes del gran día.
+        </motion.em>
+      </span>
+    </h1>
+  );
+}
+
+function MotionCta({ children, className = '', ...props }) {
+  const reduceMotion = useReducedMotion();
+  return (
+    <motion.a
+      className={`button motion-cta ${className}`}
+      whileHover={reduceMotion ? undefined : { y: -3, scale: 1.012 }}
+      whileTap={reduceMotion ? undefined : { scale: 0.965 }}
+      transition={{ type: 'spring', stiffness: 430, damping: 25 }}
+      {...props}
+    >
+      <span className="motion-cta-label">{children}</span>
+      <span className="cta-glow" aria-hidden="true" />
+    </motion.a>
+  );
+}
+
 function Brand() {
   return (
     <span className="brand-lockup">
@@ -148,9 +212,16 @@ function FloatingWhatsapp() {
 function HeroInvitation() {
   const [activeDemo, setActiveDemo] = useState(heroDemos[0]);
   const reduceMotion = useReducedMotion();
+  const artRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: artRef, offset: ['start end', 'end start'] });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 105, damping: 24, mass: 0.34 });
+  const phoneY = useTransform(smoothProgress, [0, 0.5, 1], [30, 0, -26]);
+  const phoneRotateY = useTransform(smoothProgress, [0, 0.5, 1], [-5, 0, 5]);
+  const phoneRotateX = useTransform(smoothProgress, [0, 0.5, 1], [2.5, 0, -2.5]);
+  const phoneScale = useTransform(smoothProgress, [0, 0.5, 1], [0.965, 1, 1.018]);
 
   return (
-    <div className="hero-art" aria-label="Ejemplo editorial de una invitación digital">
+    <div ref={artRef} className="hero-art" aria-label="Ejemplo editorial de una invitación digital">
       <div className="hero-ambient hero-ambient-one" aria-hidden="true" />
       <div className="hero-ambient hero-ambient-two" aria-hidden="true" />
       <div className="hero-demo-head">
@@ -170,44 +241,51 @@ function HeroInvitation() {
           ))}
         </div>
       </div>
-      <motion.a
-        className="phone"
-        href={activeDemo.url}
-        target="_blank"
-        rel="noreferrer"
-        aria-label={`Abrir la invitación real: ${activeDemo.label}`}
-        whileHover={reduceMotion ? undefined : { y: -7, scale: 1.012 }}
-        whileTap={{ scale: 0.992 }}
-        transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+      <motion.div
+        className="phone-motion-shell"
+        style={reduceMotion ? undefined : { y: phoneY, rotateY: phoneRotateY, rotateX: phoneRotateX, scale: phoneScale }}
       >
-        <span className="phone-button phone-button-top" aria-hidden="true" />
-        <span className="phone-button phone-button-mid" aria-hidden="true" />
-        <span className="phone-button phone-button-side" aria-hidden="true" />
-        <div className="phone-screen phone-video-screen">
-          <AnimatePresence initial={false} mode="popLayout">
-            <motion.video
-              key={activeDemo.id}
-              className="invite-video"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              poster={activeDemo.poster}
-              onCanPlay={(event) => event.currentTarget.play().catch(() => {})}
-              aria-hidden="true"
-              initial={reduceMotion ? false : { opacity: 0, scale: 1.018 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={reduceMotion ? undefined : { opacity: 0, scale: 0.995 }}
-              transition={{ duration: 0.46, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <source src={activeDemo.webm} type="video/webm" />
-              <source src={activeDemo.mp4} type="video/mp4" />
-            </motion.video>
-          </AnimatePresence>
-          <span className="screen-sheen" aria-hidden="true" />
-        </div>
-      </motion.a>
+        <AnimatePresence initial={false} mode="wait">
+          <motion.a
+            key={activeDemo.id}
+            className="phone"
+            href={activeDemo.url}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`Abrir la invitación real: ${activeDemo.label}`}
+            initial={reduceMotion ? false : { opacity: 0, rotateY: -10, scale: 0.975, filter: 'blur(5px)' }}
+            animate={{ opacity: 1, rotateY: 0, scale: 1, filter: 'blur(0px)' }}
+            exit={reduceMotion ? undefined : { opacity: 0, rotateY: 9, scale: 0.985, filter: 'blur(4px)' }}
+            whileHover={reduceMotion ? undefined : { y: -7, scale: 1.012 }}
+            whileTap={reduceMotion ? undefined : { scale: 0.985 }}
+            transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="phone-button phone-button-top" aria-hidden="true" />
+            <span className="phone-button phone-button-mid" aria-hidden="true" />
+            <span className="phone-button phone-button-side" aria-hidden="true" />
+            <div className="phone-screen phone-video-screen">
+              <motion.video
+                className="invite-video"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                poster={activeDemo.poster}
+                onCanPlay={(event) => event.currentTarget.play().catch(() => {})}
+                aria-hidden="true"
+                initial={reduceMotion ? false : { scale: 1.025 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <source src={activeDemo.webm} type="video/webm" />
+                <source src={activeDemo.mp4} type="video/mp4" />
+              </motion.video>
+              <span className="screen-sheen" aria-hidden="true" />
+            </div>
+          </motion.a>
+        </AnimatePresence>
+      </motion.div>
       <div className="demo-caption"><span className="live-dot" />Demo real · toca el teléfono para abrirla</div>
     </div>
   );
@@ -251,15 +329,16 @@ function InvitationPreview() {
 function App() {
   return (
     <>
+      <ScrollProgress />
       <Header />
       <main id="inicio">
         <section className="hero shell">
           <Reveal className="hero-copy">
             <p className="eyebrow"><span /> INVITACIONES DIGITALES · DISEÑADAS PARA RECORDARSE</p>
-            <h1>La emoción comienza <em>antes del gran día.</em></h1>
+            <KineticHeadline />
             <p className="hero-lead">Transformamos los detalles de tu celebración en una experiencia digital hermosa, clara y fácil de compartir.</p>
             <div className="hero-actions">
-              <a className="button primary" href={whatsappUrl()} target="_blank" rel="noreferrer">Quiero crear la mía <span>↗</span></a>
+              <MotionCta className="primary" href={whatsappUrl()} target="_blank" rel="noreferrer">Quiero crear la mía <span className="cta-arrow">↗</span></MotionCta>
               <a className="button quiet" href="#experiencia">Descubrir la experiencia</a>
             </div>
             <div className="hero-signals"><span>Diseño a tu medida</span><i /><span>Perfecta en tu teléfono</span><i /><span>Lista para compartir</span></div>
@@ -312,7 +391,7 @@ function App() {
           <Reveal className="service-note">
             <div><span className="service-dot" /><div><small>INVITACIÓN DIGITAL ESTÁNDAR</small><strong>Una propuesta clara y completa para tu evento</strong></div></div>
             <div className="service-price" aria-label="Precio: 25 dólares"><span>$</span><strong>25</strong></div>
-            <a className="button dark" href={whatsappUrl()} target="_blank" rel="noreferrer">Empezar por WhatsApp <span>↗</span></a>
+            <MotionCta className="dark" href={whatsappUrl()} target="_blank" rel="noreferrer">Empezar por WhatsApp <span className="cta-arrow">↗</span></MotionCta>
           </Reveal>
         </section>
 
@@ -332,7 +411,7 @@ function App() {
             <p className="kicker light">Sweet Moments SV</p>
             <h2>Haz que la emoción empiece <em>desde el primer mensaje.</em></h2>
             <p>Cuéntanos qué estás celebrando y creemos una invitación que se sienta completamente tuya.</p>
-            <a className="button cream" href={whatsappUrl()} target="_blank" rel="noreferrer">Crear mi invitación <span>↗</span></a>
+            <MotionCta className="cream" href={whatsappUrl()} target="_blank" rel="noreferrer">Crear mi invitación <span className="cta-arrow">↗</span></MotionCta>
           </Reveal>
         </section>
       </main>
