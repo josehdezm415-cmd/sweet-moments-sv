@@ -38,10 +38,10 @@ const whatsappUrl = (message = 'SM-WEB Hola, quiero crear una invitación digita
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
 const details = [
-  ['01', 'Diseño con identidad propia', 'Colores, tipografía y detalles creados alrededor de la esencia de tu celebración.'],
-  ['02', 'Todo, bellamente reunido', 'Fecha, hora, ubicación, galería, cuenta regresiva y cada detalle importante.'],
-  ['03', 'Confirmar se vuelve sencillo', 'Tus invitados responden por WhatsApp con un solo toque y sin formularios complicados.'],
-  ['04', 'Un enlace hecho para compartir', 'Se ve precioso en el teléfono y llega a todos en segundos.'],
+  ['Diseño con identidad propia', 'Colores, tipografía y detalles creados alrededor de la esencia de tu celebración.'],
+  ['Todo, bellamente reunido', 'Fecha, hora, ubicación, galería, cuenta regresiva y cada detalle importante.'],
+  ['Confirmar se vuelve sencillo', 'Tus invitados responden por WhatsApp con un solo toque y sin formularios complicados.'],
+  ['Un enlace hecho para compartir', 'Se ve precioso en el teléfono y llega a todos en segundos.'],
 ];
 
 const process = [
@@ -292,9 +292,9 @@ function App() {
               <a className="inline-link" href={DEMO_URL} target="_blank" rel="noreferrer">Explorar demo completa <span>↗</span></a>
             </Reveal>
             <div className="detail-list">
-              {details.map(([number, title, copy], index) => (
-                <Reveal as="article" className="detail-row" delay={index * 60} key={number}>
-                  <span>{number}</span><div><h3>{title}</h3><p>{copy}</p></div>
+              {details.map(([title, copy], index) => (
+                <Reveal as="article" className="detail-row" delay={index * 60} key={title}>
+                  <h3>{title}</h3><p>{copy}</p>
                 </Reveal>
               ))}
             </div>
