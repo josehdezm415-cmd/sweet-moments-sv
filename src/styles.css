@@ -116,7 +116,7 @@ h1 { max-width: 710px; margin-bottom: 24px; font-size: clamp(3.7rem, 6.3vw, 6.5r
 .phone-screen { position: relative; aspect-ratio: 9/18.5; padding: 47px 18px 17px; display: flex; flex-direction: column; align-items: center; overflow: hidden; color: #713244; text-align: center; border-radius: 35px; background: radial-gradient(circle at 14% 20%,rgba(180,51,77,.1) 0 2px,transparent 2.5px), radial-gradient(circle at 83% 34%,rgba(111,145,94,.1) 0 2px,transparent 2.5px), linear-gradient(160deg,#fffdf8 0%,#fff3eb 50%,#f8dde3 100%); background-size: 44px 44px,52px 52px,auto; }
 .phone-island { position: absolute; z-index: 8; top: 17px; left: 50%; width: 82px; height: 20px; border-radius: 99px; background: #211a1d; transform: translateX(-50%); }
 .phone-screen.phone-video-screen { aspect-ratio: 390 / 844; padding: 0; display: block; background: #fdf3f3; }
-.invite-video { width: 100%; height: 100%; display: block; object-fit: cover; border-radius: inherit; background: #fdf3f3; }
+.invite-video { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; border-radius: inherit; background: #fdf3f3; }
 .invite-sparkles { position: absolute; inset: 0; pointer-events: none; }
 .invite-sparkles i { position: absolute; width: 7px; height: 9px; border-radius: 65% 45% 60% 40%; background: #c83355; opacity: .75; }
 .invite-sparkles i::before { content: ''; position: absolute; top: -3px; left: 3px; width: 4px; height: 4px; border-radius: 4px 0; background: #7b9c6d; transform: rotate(-35deg); }

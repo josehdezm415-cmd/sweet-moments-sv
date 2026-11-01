@@ -20,8 +20,8 @@ const heroDemos = [
     label: 'Baby Raquel',
     url: DEMO_URL,
     poster: './assets/raquel-scroll-poster-v1.jpg',
-    webm: './assets/raquel-scroll-v1.webm',
-    mp4: './assets/raquel-scroll-v1.mp4',
+    webm: './assets/raquel-scroll-v2.webm',
+    mp4: './assets/raquel-scroll-v2.mp4',
   },
   {
     id: 'denzel',
@@ -29,8 +29,8 @@ const heroDemos = [
     label: 'Cumpleaños de Denzel',
     url: DENZEL_DEMO_URL,
     poster: './assets/denzel-scroll-poster-v1.jpg',
-    webm: './assets/denzel-scroll-v1.webm',
-    mp4: './assets/denzel-scroll-v1.mp4',
+    webm: './assets/denzel-scroll-v2.webm',
+    mp4: './assets/denzel-scroll-v2.mp4',
   },
 ];
 
@@ -188,6 +188,13 @@ function HeroInvitation() {
   const phoneRotateY = useTransform(smoothProgress, [0, 0.5, 1], [-5, 0, 5]);
   const phoneRotateX = useTransform(smoothProgress, [0, 0.5, 1], [2.5, 0, -2.5]);
   const phoneScale = useTransform(smoothProgress, [0, 0.5, 1], [0.965, 1, 1.018]);
+  const showNextDemo = (completedId) => {
+    setActiveDemo((currentDemo) => {
+      if (currentDemo.id !== completedId) return currentDemo;
+      const activeIndex = heroDemos.findIndex((demo) => demo.id === completedId);
+      return heroDemos[(activeIndex + 1) % heroDemos.length];
+    });
+  };
 
   return (
     <div ref={artRef} className="hero-art" aria-label="Ejemplo editorial de una invitación digital">
@@ -214,46 +221,44 @@ function HeroInvitation() {
         className="phone-motion-shell"
         style={reduceMotion ? undefined : { y: phoneY, rotateY: phoneRotateY, rotateX: phoneRotateX, scale: phoneScale }}
       >
-        <AnimatePresence initial={false} mode="wait">
-          <motion.a
-            key={activeDemo.id}
-            className="phone"
-            href={activeDemo.url}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={`Abrir la invitación real: ${activeDemo.label}`}
-            initial={reduceMotion ? false : { opacity: 0, rotateY: -10, scale: 0.975, filter: 'blur(5px)' }}
-            animate={{ opacity: 1, rotateY: 0, scale: 1, filter: 'blur(0px)' }}
-            exit={reduceMotion ? undefined : { opacity: 0, rotateY: 9, scale: 0.985, filter: 'blur(4px)' }}
-            whileHover={reduceMotion ? undefined : { y: -7, scale: 1.012 }}
-            whileTap={reduceMotion ? undefined : { scale: 0.985 }}
-            transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <span className="phone-button phone-button-top" aria-hidden="true" />
-            <span className="phone-button phone-button-mid" aria-hidden="true" />
-            <span className="phone-button phone-button-side" aria-hidden="true" />
-            <div className="phone-screen phone-video-screen">
+        <motion.a
+          className="phone"
+          href={activeDemo.url}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`Abrir la invitación real: ${activeDemo.label}`}
+          whileHover={reduceMotion ? undefined : { y: -7, scale: 1.012 }}
+          whileTap={reduceMotion ? undefined : { scale: 0.985 }}
+          transition={{ type: 'spring', stiffness: 260, damping: 26 }}
+        >
+          <span className="phone-button phone-button-top" aria-hidden="true" />
+          <span className="phone-button phone-button-mid" aria-hidden="true" />
+          <span className="phone-button phone-button-side" aria-hidden="true" />
+          <div className="phone-screen phone-video-screen">
+            <AnimatePresence initial={false} mode="sync">
               <motion.video
+                key={activeDemo.id}
                 className="invite-video"
                 autoPlay
                 muted
-                loop
                 playsInline
                 preload="auto"
                 poster={activeDemo.poster}
                 onCanPlay={(event) => event.currentTarget.play().catch(() => {})}
+                onEnded={() => showNextDemo(activeDemo.id)}
                 aria-hidden="true"
-                initial={reduceMotion ? false : { scale: 1.025 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                initial={reduceMotion ? false : { opacity: 0, scale: 1.012 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={reduceMotion ? undefined : { opacity: 0, scale: 0.994 }}
+                transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
               >
                 <source src={activeDemo.webm} type="video/webm" />
                 <source src={activeDemo.mp4} type="video/mp4" />
               </motion.video>
-              <span className="screen-sheen" aria-hidden="true" />
-            </div>
-          </motion.a>
-        </AnimatePresence>
+            </AnimatePresence>
+            <span className="screen-sheen" aria-hidden="true" />
+          </div>
+        </motion.a>
       </motion.div>
       <div className="demo-caption"><span className="live-dot" />Demo real · toca el teléfono para abrirla</div>
     </div>
